@@ -8,56 +8,74 @@
 /**
  * Render the game board with current state
  * @param {Array} board - Current board state
+ * @param {number} boardSize - Current board dimension
  * @param {boolean} gameActive - Whether game is active
+ * @param {Array<number>|null} lastWinningCombination - Indices of winning cells
  */
-function renderBoard(board, gameActive) {
-  const cells = document.querySelectorAll('.cell');
-  
-  cells.forEach((cell, index) => {
-    const mark = board[index];
+function renderBoard(board, boardSize, gameActive, lastWinningCombination) {
+  const gameBoard = document.querySelector('.game-board');
+  if (!gameBoard) return;
+
+  gameBoard.innerHTML = '';
+  gameBoard.style.setProperty('--board-size', String(boardSize));
+
+  const winningSet = new Set(lastWinningCombination || []);
+
+  board.forEach((mark, index) => {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.setAttribute('role', 'gridcell');
+    cell.dataset.index = String(index);
     cell.textContent = mark;
-    
-    // Update ARIA label
-    const cellNumber = index + 1;
+
+    const row = Math.floor(index / boardSize) + 1;
+    const col = (index % boardSize) + 1;
     const cellState = mark || 'empty';
-    cell.setAttribute('aria-label', `Cell ${cellNumber}, ${cellState}`);
-    
-    // Update classes
+    cell.setAttribute('aria-label', `Row ${row}, Column ${col}, ${cellState}`);
+
     if (mark) {
       cell.classList.add('occupied');
-    } else {
-      cell.classList.remove('occupied');
     }
-    
+
+    if (winningSet.has(index)) {
+      cell.classList.add('cell--winning');
+    }
+
     if (!gameActive) {
       cell.classList.add('disabled');
       cell.setAttribute('aria-disabled', 'true');
-    } else {
-      cell.classList.remove('disabled');
-      cell.removeAttribute('aria-disabled');
     }
+
+    gameBoard.appendChild(cell);
   });
 }
 
 /**
  * Render the game status message
- * @param {string} currentPlayer - Current player ('X' or 'O')
- * @param {string|null} winner - Winner ('X', 'O', 'draw', or null)
- * @param {boolean} gameActive - Whether game is active
+ * @param {Object} state - Current game state
  */
-function renderStatus(currentPlayer, winner, gameActive) {
+function renderStatus(state) {
   const statusElement = document.querySelector('.game-status');
+  if (!statusElement) return;
+
+  const { currentPlayer, winner, gameActive, boardSize, isExpanding } = state;
   
   if (!gameActive) {
     if (winner === 'draw') {
-      statusElement.textContent = "It's a draw!";
+      statusElement.textContent = `It's a draw! Expanding board to ${Math.min(boardSize + 1, 10)}×${Math.min(boardSize + 1, 10)}...`;
       statusElement.className = 'game-status draw';
-    } else {
-      statusElement.textContent = `Player ${winner} wins!`;
+    } else if (winner === 'X' || winner === 'O') {
+      statusElement.textContent = `Player ${winner} wins! Expanding board to ${Math.min(boardSize + 1, 10)}×${Math.min(boardSize + 1, 10)}...`;
       statusElement.className = `game-status winner winner-${winner}`;
+    } else {
+      statusElement.textContent = 'Game over';
+      statusElement.className = 'game-status';
     }
+  } else if (isExpanding) {
+    statusElement.textContent = 'Expanding board...';
+    statusElement.className = 'game-status';
   } else {
-    statusElement.textContent = `Player ${currentPlayer}'s turn`;
+    statusElement.textContent = `Player ${currentPlayer}'s turn — Board: ${boardSize}×${boardSize}`;
     statusElement.className = 'game-status';
   }
 }
@@ -94,6 +112,6 @@ function bindResetClick(callback) {
  * @param {Object} state - Current game state
  */
 function render(state) {
-  renderBoard(state.board, state.gameActive);
-  renderStatus(state.currentPlayer, state.winner, state.gameActive);
+  renderBoard(state.board, state.boardSize, state.gameActive, state.lastWinningCombination);
+  renderStatus(state);
 }

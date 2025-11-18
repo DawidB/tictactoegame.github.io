@@ -18,6 +18,14 @@ function initApp() {
     if (result.success) {
       state = result.state;
       render(state);
+
+      if (state.isExpanding && (state.winner === 'X' || state.winner === 'O' || state.winner === 'draw')) {
+        const delay = 1000;
+        setTimeout(() => {
+          state = expandBoard(state);
+          render(state);
+        }, delay);
+      }
     }
   });
   

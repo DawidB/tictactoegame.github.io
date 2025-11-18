@@ -43,7 +43,7 @@ body {
 /* Game Board - CSS Grid Layout */
 .game-board {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--board-size, 3), 1fr);
   gap: 10px;
   max-width: 400px;
   margin: 0 auto 30px;
@@ -88,6 +88,11 @@ body {
 .cell.disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+.cell--winning {
+  background-color: #f1c40f;
+  color: #2c3e50;
 }
 
 /* X and O Mark Styling */
