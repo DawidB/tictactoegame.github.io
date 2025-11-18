@@ -1,0 +1,185 @@
+/* Tic-Tac-Toe Game Styles */
+
+/* Basic Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  background-color: #f5f5f5;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Game Container */
+.game-container {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.game-container h1 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* Game Status */
+.game-status {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  min-height: 2rem;
+  color: #34495e;
+}
+
+/* Game Board - CSS Grid Layout */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto 30px;
+  padding: 10px;
+  background-color: #34495e;
+  border-radius: 10px;
+}
+
+/* Cell Styling */
+.cell {
+  aspect-ratio: 1 / 1;
+  min-height: 80px;
+  background-color: #ecf0f1;
+  border: none;
+  border-radius: 8px;
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+/* Cell Hover Effect */
+.cell:hover:not(.occupied):not(.disabled) {
+  background-color: #bdc3c7;
+  transform: scale(1.05);
+}
+
+.cell:active:not(.occupied):not(.disabled) {
+  transform: scale(0.98);
+}
+
+/* Occupied Cell Styling */
+.cell.occupied {
+  cursor: not-allowed;
+}
+
+/* Disabled cells (game ended) */
+.cell.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* X and O Mark Styling */
+.cell {
+  color: #2c3e50;
+}
+
+/* Focus styles for accessibility */
+.cell:focus {
+  outline: 3px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Reset Button */
+.reset-button {
+  padding: 12px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background-color: #3498db;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reset-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.reset-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reset-button:focus {
+  outline: 3px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Winner/Draw Status Styling */
+.game-status.winner {
+  color: #27ae60;
+  font-size: 1.8rem;
+}
+
+.game-status.draw {
+  color: #e67e22;
+  font-size: 1.8rem;
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 480px) {
+  .game-board {
+    max-width: 90vw;
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .cell {
+    min-height: 70px;
+    font-size: 2.5rem;
+  }
+  
+  .game-status {
+    font-size: 1.25rem;
+  }
+  
+  .game-container h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Responsive Design - Tablet */
+@media (min-width: 768px) {
+  .cell {
+    min-height: 100px;
+    font-size: 3.5rem;
+  }
+}
+
+/* Responsive Design - Desktop */
+@media (min-width: 1024px) {
+  .game-board {
+    max-width: 450px;
+  }
+  
+  .cell {
+    min-height: 120px;
+    font-size: 4rem;
+  }
+}
