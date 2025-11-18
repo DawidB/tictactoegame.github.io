@@ -1,4 +1,4 @@
-# Tic-Tac-Toe Game
+# Tic-Tac-Toe Game 
 
 A classic tic-tac-toe game built with vanilla JavaScript, HTML5, and CSS3. Play against a friend on the same device!
 
